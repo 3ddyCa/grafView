@@ -1,7 +1,15 @@
 <script setup lang="ts">
     import { ref,onBeforeMount,watch, useTemplateRef } from 'vue';
-    import BarChart from '../components/BarChart.vue'
+    import BarChart from '../components/BarChart.vue';
     import WidgetMeteo from '../components/WidgetMeteo.vue';
+    import { useMediaQuery } from '@vueuse/core';
+
+    const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+    const isTablet = (useMediaQuery('(min-width: 768px') && useMediaQuery('(max-width: 1024px)')?true:false)
+    const isMobile = useMediaQuery('(max-width: 768px)')
+    const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
+    const MQ_meteodisplay = ref(window.innerWidth / 420);
+    window.addEventListener('resize', ()=>{MQ_meteodisplay.value = window.innerWidth / 400; MQ_meteodisplay.value = window.innerWidth / (400 + (MQ_meteodisplay.value * 10)) })
     // import Fetcher from '../script/Fetcher.ts'
     // const meteo = new Fetcher('https://prevision-meteo.ch/services/json/')
     let currentW = useTemplateRef('thisW');
@@ -93,10 +101,11 @@
 
 <template>
 
-  <section class="bg-blue-100 w-full py-5" id="Presentation" >
+  <section class="bg-blue-100 w-full h-fit py-5" id="Presentation" >
     <h2 class="text-3xl 2b text-center p-2">Températures par villes</h2>
-    <div class="m-auto p-1 bg-base-100 rounded-box">
+    <div class="m-auto p-1 w-fit bg-base-100 rounded-box">
         <BarChart 
+            class="h-160"
             :labelProps="meteoBulletin.map((value)=>{if(value.TC){return value.name}})" 
             :dataProps=" meteoBulletin.map((value)=>{return value.TC})" 
             :axesProps="['°C',' Villes ']"
@@ -110,8 +119,13 @@
 
     <article v-if="meteoBulletin">
       <h2 class="w-full p-5 text-center text-3xl ">Vos données météos pour les grandes villes de France</h2>
-      <div id="localDisplay" class="w-full m-2 grid grid-cols-3 gap-5">
-        <WidgetMeteo  v-for="(contenu, index) in meteoBulletin" :key="index" ref="thisW" :title="contenu.name" :country="contenu.country" :date="contenu.date" :description="['Lat: '+contenu.lat,'Long: '+ contenu.long,'Elev: '+contenu.elevation]" style="WidgetMeteo" :img="contenu.img" :temperature="[contenu.TC,contenu.TCmax ,contenu.TCmin]" :humidite="'humidité '+contenu.humidity"  :pression="contenu.pressure+' bar'" :info4="meteoObject[index]"/>
+      <!-- <div id="localDisplay" class="w-full m-2 grid gap-5" :class="{'grid-cols-3' : isLargeScreen, 'grid-cols-2' : isTablet, 'grid-cols-1 m-auto' : isMobile}"> -->
+      <div id="localDisplay" class="w-full m-2 grid gap-5 "  :style ="{'grid-template-columns': 'repeat( '+Math.floor(MQ_meteodisplay)+',1fr)' }">
+        <WidgetMeteo  
+        v-for="(contenu, index) in meteoBulletin" 
+        class="m-auto"
+        :key="index" ref="thisW" :title="contenu.name" :country="contenu.country" :date="contenu.date" :description="['Lat: '+contenu.lat,'Long: '+ contenu.long,'Elev: '+contenu.elevation]"  :img="contenu.img" :temperature="[contenu.TC,contenu.TCmax ,contenu.TCmin]" :humidite="'humidité '+contenu.humidity"  :pression="contenu.pressure+' bar'" :info4="meteoObject[index]"
+        />
       </div>
     </article>
 
