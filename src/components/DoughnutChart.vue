@@ -28,7 +28,7 @@
             type:Array<string>,
                 required:true,
                 default:[' ',' ']
-        }
+        },
         blockColorProps:{
             type:Array<string>,
                 required:true,

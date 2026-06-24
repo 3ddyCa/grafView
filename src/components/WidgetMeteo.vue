@@ -61,7 +61,7 @@
             info4 : {
                 type : Array<Array<string>>,
                 required : false,
-                default: [['Pas d\'info à afficher']],
+                default: 'Pas d\'info à afficher',
                 validator: (value:string)=> value.length < 50
             },
             

@@ -37,6 +37,7 @@
   <Bar class="w-full"
     id="my-chart-id"
     :data="chartData"
+    :option="chartOption"
   />
 </template>
 
@@ -62,7 +63,24 @@ export default {
                     
                 }]
             }
+        },
+        chartOption() {
+            return {
+                options:{
+                    scales:{
+                        y:{
+                            min:-20,
+                            max:50,
+                            ticks:{
+                                stepSize:1,
+                                maxTicksLimit:50
+                            }
+                        }
+                    }
+                }
+            }
         }
+        
     }
 }
 
