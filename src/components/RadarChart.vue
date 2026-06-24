@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Bar, defineProps } from 'vue-chartjs'
+    import { Radar, defineProps } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
     const props = defineProps({
@@ -14,6 +14,11 @@
             required:true,
             default: [10, 17.5, 22.3]
         },
+        optionProps:{
+            type:Array<string>,
+            required:true,
+            default: []
+        },
         typeProps:{
             type:Array<string>,
             required:true,
@@ -23,19 +28,15 @@
             type:Array<string>,
                 required:true,
                 default:[' ',' ']
-        },
-        blockColorProps:{
-            type:Array<string>,
-                required:true,
-                default:['rgba(255,0,0,1.0)']
         }
 
     })
 </script>
 
 <template>
-  <Bar class="w-full"
+  <Radar class="w-full"
     id="my-chart-id"
+    :options="optionProps"
     :data="chartData"
   />
 </template>
@@ -46,8 +47,8 @@
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChart',
-    components: { Bar },
+    name: 'RadarChart',
+    components: { Radar },
     computed:{    
         chartData() {
             return {labels: this.$props.labelProps,
@@ -56,7 +57,7 @@ export default {
                     yAxisID:this.$props.axesProps[0],
                     xAxisID:this.$props.axesProps[1] ,
                     label:"Température (°C)",
-                    backgroundColor: this.$props.blockColorProps,
+                    backgroundColor: ['rgba(255,0,0,1.0)','rgba(255,0,0,1.0)'],
                     strokeColor: 'rgba(120,120,255,1.0)',
                     highlightStroke: 'rgba(120,120,0,1.0)'
                     

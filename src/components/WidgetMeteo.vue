@@ -3,6 +3,7 @@
     import { BarController} from 'chart.js';
     import { Bar } from 'vue-chartjs'
     import BarChart from './BarChart.vue'
+    import { getBarColor } from '../components/script/utils.ts';
     import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
     ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
@@ -113,6 +114,8 @@
                     :dataProps="temperature" 
                     :axesProps="['°C',' ']"
                     :typeProps="['linear','right']"
+                    :blockColorProps="temperature.map((value:number)=>{return getBarColor(value)})"
+
                 />
             </div>        
         </div>

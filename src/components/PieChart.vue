@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Bar, defineProps } from 'vue-chartjs'
+    import { Pie, defineProps } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
     const props = defineProps({
@@ -13,6 +13,11 @@
             type:Array<number>,
             required:true,
             default: [10, 17.5, 22.3]
+        },
+        optionProps:{
+            type:Array<string>,
+            required:true,
+            default: []
         },
         typeProps:{
             type:Array<string>,
@@ -33,21 +38,14 @@
     })
 </script>
 
-<template>
-  <Bar class="w-full"
-    id="my-chart-id"
-    :data="chartData"
-  />
-</template>
-
 <script lang="ts">
 
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChart',
-    components: { Bar },
+    name: 'PieChart',
+    components: { Pie },
     computed:{    
         chartData() {
             return {labels: this.$props.labelProps,
@@ -67,3 +65,11 @@ export default {
 }
 
 </script>
+
+<template>
+  <Pie class="w-full"
+    id="my-chart-id"
+    :options="optionProps"
+    :data="chartData"
+  />
+</template>
