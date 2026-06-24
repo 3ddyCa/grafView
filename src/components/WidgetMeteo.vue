@@ -83,7 +83,7 @@
 
 <template>
     
-    <section class="p-5 bg-orange-100 flex rounded-box m-10 w-140 h-fit gap-2 shadow-md" >
+    <section class="p-5 bg-blue-100 flex rounded-box w-100 h-fit gap-2 shadow-md" >
         <div class=" grid grid-cols-2 gap-2 m-auto" >
             <div  >
                 <strong class="text-center text-3xl m-1">{{ title }}</strong>

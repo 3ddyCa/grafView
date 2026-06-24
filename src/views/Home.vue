@@ -94,7 +94,7 @@
 <template>
 
   <section class="bg-blue-100 w-full py-5" id="Presentation" >
-    <h2 class="text-2xl 2b text-center">Météo de la dernière semaine</h2>
+    <h2 class="text-3xl 2b text-center p-2">Températures par villes</h2>
     <div class="m-auto p-1 bg-base-100 rounded-box">
         <BarChart 
             :labelProps="meteoBulletin.map((value)=>{if(value.TC){return value.name}})" 
@@ -110,9 +110,8 @@
 
     <article v-if="meteoBulletin">
       <h2 class="w-full p-5 text-center text-3xl ">Vos données météos pour les grandes villes de France</h2>
-      <div class="grid grid-cols-3 gap-1" v-for="(contenu, index) in meteoBulletin">
-        {{ console.log("Element",contenu) }}
-        <WidgetMeteo :key="index" ref="thisW" :title="contenu.name" :country="contenu.country" :date="contenu.date" :description="['Latitude '+contenu.lat,'Longitude '+ contenu.long,'Elevation '+contenu.elevation]" style="WidgetMeteo" :img="contenu.img" :temperature="[contenu.TC,contenu.TCmax ,contenu.TCmin]" :humidite="'humidité '+contenu.humidity"  :pression="contenu.pressure+' bar'" :info4="meteoObject[index]"/>
+      <div id="localDisplay" class="w-full m-2 grid grid-cols-3 gap-5">
+        <WidgetMeteo  v-for="(contenu, index) in meteoBulletin" :key="index" ref="thisW" :title="contenu.name" :country="contenu.country" :date="contenu.date" :description="['Lat: '+contenu.lat,'Long: '+ contenu.long,'Elev: '+contenu.elevation]" style="WidgetMeteo" :img="contenu.img" :temperature="[contenu.TC,contenu.TCmax ,contenu.TCmin]" :humidite="'humidité '+contenu.humidity"  :pression="contenu.pressure+' bar'" :info4="meteoObject[index]"/>
       </div>
     </article>
 
