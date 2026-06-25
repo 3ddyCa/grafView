@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Bar, defineProps } from 'vue-chartjs'
-    import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+    import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale } from 'chart.js'
 
     const props = defineProps({
         labelProps:{
@@ -22,7 +22,7 @@
         axesProps:{
             type:Array<string>,
                 required:true,
-                default:[' ',' ']
+                default:[' label 1','label 2']
         },
         blockColorProps:{
             type:Array<string>,
@@ -44,15 +44,17 @@
 <script lang="ts">
 
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale)
 
 export default {
     name: 'BarChart',
     components: { Bar },
     computed:{    
         chartData() {
-            return {labels: this.$props.labelProps,
+            return {
+                labels: this.$props.labelProps,
                 datasets: [ { 
+                    
                     data: this.$props.dataProps, 
                     yAxisID:this.$props.axesProps[0],
                     xAxisID:this.$props.axesProps[1] ,
@@ -68,12 +70,21 @@ export default {
             return {
                 options:{
                     scales:{
-                        y:{
+                        myScale:{
+                            type: this.$props.typeProps[0],
+                            position: this.$props.typeProps[1],
                             min:-20,
                             max:50,
                             ticks:{
+
                                 stepSize:1,
-                                maxTicksLimit:50
+                                maxTicksLimit:50,
+                                fontSize: 40
+                            }
+                        },
+                        x:{
+                            ticks:{
+                                fontSize: 40
                             }
                         }
                     }

@@ -1,12 +1,12 @@
 <script setup lang="ts">
     import { Doughnut, defineProps } from 'vue-chartjs'
-    import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+    import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale ,LogarithmicScale} from 'chart.js'
 
     const props = defineProps({
         labelProps:{
             type: Array<string>,
             required:true,
-            default: ['val1', 'val2', 'val3'],
+            default: ['Chocolat', 'Nature', 'Fraise'],
             //validator: (value:Array)=>{value.forEach((label:string)=>{label.length < 10})}
         },
         dataProps:{
@@ -32,10 +32,70 @@
         blockColorProps:{
             type:Array<string>,
                 required:true,
-                default:['rgba(255,0,0,1.0)']
+                default:['rgba(0,0,255,1.0)',
+                    'rgba(255,255,0,1.0)',
+                    'rgba(255,0,0,1.0)',]
         }
 
     })
+</script>
+
+<script lang="ts">
+
+
+ChartJS.register(Title, Tooltip, Legend,ArcElement, LogarithmicScale, CategoryScale, LinearScale)
+
+export default {
+    name: 'DoughnutChart',
+    components: { Doughnut },
+    computed:{    
+        chartData() {
+            return {labels: this.$props.labelProps,
+                elements:{
+                    arc:{
+                        backgroundColor: this.$props.blockColorProps[0],
+                        strokeColor: 'rgba(120,120,255,1.0)',
+                        highlightStroke: 'rgba(120,120,0,1.0)',
+                    }
+                },
+                datasets: [ { 
+                    data: this.$props.dataProps, 
+                    yAxisID:this.$props.axesProps[0],
+                    xAxisID:this.$props.axesProps[1] ,
+                    label:"Température (°C)",
+                    backgroundColor: this.$props.blockColorProps,
+                    
+                }]
+            }
+        },
+        chartOption() {
+            return {
+                options:{
+                    scales:{
+                        myScale:{
+                            type: this.$props.typeProps[0],
+                            position: this.$props.typeProps[1],
+                            min:-20,
+                            max:50,
+                            ticks:{
+
+                                stepSize:1,
+                                maxTicksLimit:50,
+                                fontSize: 40
+                            }
+                        },
+                        r:{
+                            ticks:{
+                                fontSize: 40
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -45,31 +105,3 @@
     :data="chartData"
   />
 </template>
-
-<script lang="ts">
-
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-
-export default {
-    name: 'DoughnutChart',
-    components: { Doughnut },
-    computed:{    
-        chartData() {
-            return {labels: this.$props.labelProps,
-                datasets: [ { 
-                    data: this.$props.dataProps, 
-                    yAxisID:this.$props.axesProps[0],
-                    xAxisID:this.$props.axesProps[1] ,
-                    label:"Température (°C)",
-                    backgroundColor: this.$props.blockColorProps,
-                    strokeColor: 'rgba(120,120,255,1.0)',
-                    highlightStroke: 'rgba(120,120,0,1.0)'
-                    
-                }]
-            }
-        }
-    }
-}
-
-</script>

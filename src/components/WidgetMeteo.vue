@@ -1,6 +1,5 @@
 <script setup lang="ts">
     import { ref,computed,watch,onMounted } from 'vue';
-    import { BarController} from 'chart.js';
     import { Bar } from 'vue-chartjs'
     import BarChart from './BarChart.vue'
     import { getBarColor } from '../components/script/utils.ts';
