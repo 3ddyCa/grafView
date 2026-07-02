@@ -15,12 +15,7 @@
                 default: 'Pas de données disponibles',
                 validator: (value:string)=> value.length < 50
             },
-            style : {
-                type : String,
-                required : true,
-                default: 'bg-orage-100',
-                validator: (value:string)=> value.length < 20
-            },
+
             description : {
                 type : Array,
                 required : true,
@@ -57,12 +52,12 @@
                 default: 'Pas d\'info à afficher',
                 validator: (value:string)=> value.length < 50
             },
-            info4 : {
-                type : Array<Array<string>>,
-                required : false,
-                default: 'Pas d\'info à afficher',
-                validator: (value:string)=> value.length < 50
-            },
+            // info4 : {
+            //     type : Array<Array<string>>,
+            //     required : false,
+            //     default: 'Pas d\'info à afficher',
+            //     validator: (value:string)=> value.length < 50
+            // },
             
             img : {
                 type : String,
@@ -103,13 +98,14 @@
                 <ul class="gap-1 menu">
                     <li>{{ humidite }}</li>
                     <li>{{ pression }}</li>
-                    <li>{{ info4 }}</li>
+                    <!-- <li>{{ info4 }}</li> -->
                 </ul>
                 
             </div> 
             <div class="m-auto p-1 bg-base-100 rounded-box col-span-2">
                 <BarChart 
-                    :labelProps="['T','Tmax', 'Tmin']" 
+                    :labelXProps="['T','Tmax', 'Tmin']" 
+                    :labelYProps="['Température °C']"
                     :dataProps="temperature" 
                     :axesProps="['°C',' ']"
                     :typeProps="['linear','right']"

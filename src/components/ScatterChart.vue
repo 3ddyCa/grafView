@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Scatter, defineProps } from 'vue-chartjs'
+    import { Scatter } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale,LogarithmicScale,PointElement,  LineController, LineElement } from 'chart.js'
 
     const props = defineProps({

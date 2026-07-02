@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { PolarArea, defineProps } from 'vue-chartjs'
+    import { PolarArea } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale,RadialLinearScale,LogarithmicScale,PointElement,ArcElement,  LineController, LineElement } from 'chart.js'
 
     const props = defineProps({

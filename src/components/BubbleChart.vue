@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Bubble, defineProps } from 'vue-chartjs'
+    import { Bubble } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale,LogarithmicScale,PointElement,  LineController, LineElement } from 'chart.js'
 
     const props = defineProps({

@@ -1,9 +1,15 @@
 <script setup lang="ts">
-    import { Bar, defineProps } from 'vue-chartjs'
+    import { Bar } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LogarithmicScale } from 'chart.js'
 
     const props = defineProps({
-        labelProps:{
+        labelXProps:{
+            type: Array<string>,
+            required:true,
+            default: ['val1', 'val2', 'val3'],
+            //validator: (value:Array)=>{value.forEach((label:string)=>{label.length < 10})}
+        },
+        labelYProps:{
             type: Array<string>,
             required:true,
             default: ['val1', 'val2', 'val3'],
@@ -16,6 +22,11 @@
         },
         typeProps:{
             type:Array<string>,
+            required:true,
+            default: ['logarithmic','right']
+        },
+        optionProps:{
+            type:Array<any>,
             required:true,
             default: ['logarithmic','right']
         },
@@ -52,24 +63,19 @@ export default {
     computed:{    
         chartData() {
             return {
-                labels: this.$props.labelProps,
+                labels: this.$props.labelXProps,
                 datasets: [ { 
                     
                     data: this.$props.dataProps, 
                     yAxisID:this.$props.axesProps[0],
                     xAxisID:this.$props.axesProps[1] ,
-                    label:"Température (°C)",
+                    label:this.$props.labelYProps,
                     backgroundColor: this.$props.blockColorProps,
                     strokeColor: 'rgba(120,120,255,1.0)',
                     highlightStroke: 'rgba(120,120,0,1.0)'
                     
-                }]
-            }
-        },
-        chartOption() {
-            return {
-                options:{
-                    scales:{
+                }],
+                scales:{
                         myScale:{
                             type: this.$props.typeProps[0],
                             position: this.$props.typeProps[1],
@@ -88,7 +94,11 @@ export default {
                             }
                         }
                     }
-                }
+            }
+        },
+        chartOption() {
+            return {
+                options:{elements:{bar:this.$props.optionProps}}
             }
         }
         

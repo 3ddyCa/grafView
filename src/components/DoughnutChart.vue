@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Doughnut, defineProps } from 'vue-chartjs'
+    import { Doughnut } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale ,LogarithmicScale} from 'chart.js'
 
     const props = defineProps({

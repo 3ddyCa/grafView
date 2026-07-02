@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Radar, defineProps } from 'vue-chartjs'
+    import { Radar } from 'vue-chartjs'
     import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale,LogarithmicScale,PointElement,ArcElement,  LineController, LineElement } from 'chart.js'
     const PH_data = [10, 17.5, 22.3, 30, 56, 44];
     const props = defineProps({

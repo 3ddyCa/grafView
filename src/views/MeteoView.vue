@@ -40,7 +40,7 @@
       'paris', 
       'marseille',
       'lyon',
-      'bordeau',
+      'bordeaux',
       'strasbourg',
       'nice',
       'lille',
@@ -49,39 +49,49 @@
       'poitier',
       'agen',
       'rodez',
-      'orlean',
+      'orléan',
       'metz',
       'clermont-ferrand',
-      'auch'
+      'auch',
+      'foix',
+      'tarbes'
     ]
 
     async function getMeteo(ville:string){
-        const url = 'https://prevision-meteo.ch/services/json/';
-        const response = await fetch(url+ville);
+      const CORS = {
+        method: "GET",
+        headers: {
+          "Accept": "application/json",
+        }
+
+      }
+        // const url = 'https://prevision-meteo.ch/services/json/';
+        const url = 'http://localhost:8000/meteoview/';
+        const response = await fetch(url+ville,CORS) ;
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
         const result = await response.json();
         console.log('Meteo fetch : ',result);
-        if(result.city_info != undefined ){
+        if(result.payload.data[ville].city_info != undefined ){
             meteoBulletin.value.push( {
-              'name': result.city_info.name,
-              'country': result.city_info.country,
-              'date': result.current_condition.date,
-              'lat':result.city_info.latitude,
-              'long':result.city_info.longitude,
-              'elevation':result.city_info.elevation,
-              'TC': result.current_condition.tmp,
-              'TCmax':result.fcst_day_0.tmax,
-              'TCmin': result.fcst_day_0.tmin,
-              'sunrise':result.city_info.sunrise,
-              'sunset':result.city_info.sunset,
-              'pressure':result.current_condition.pressure,
-              'humidity':result.current_condition.humidity,
-              'img':result.current_condition.icon_big,
-              'barClr': getBarColor(result.current_condition.tmp)
+              'name': result.payload.data[ville].city_info.name,
+              'country': result.payload.data[ville].city_info.country,
+              'date': result.payload.data[ville].current_condition.date,
+              'lat':result.payload.data[ville].city_info.latitude,
+              'long':result.payload.data[ville].city_info.longitude,
+              'elevation':result.payload.data[ville].city_info.elevation,
+              'TC': result.payload.data[ville].current_condition.tmp,
+              'TCmax':result.payload.data[ville].fcst_day_0.tmax,
+              'TCmin': result.payload.data[ville].fcst_day_0.tmin,
+              'sunrise':result.payload.data[ville].city_info.sunrise,
+              'sunset':result.payload.data[ville].city_info.sunset,
+              'pressure':result.payload.data[ville].current_condition.pressure,
+              'humidity':result.payload.data[ville].current_condition.humidity,
+              'img':result.payload.data[ville].current_condition.icon_big,
+              'barClr': getBarColor(result.payload.data[ville].current_condition.tmp)
             });
-            console.log("liste : ", meteoBulletin.value)
+            //console.log("liste : ", meteoBulletin.value)
             return result;
         }
             
@@ -90,10 +100,11 @@
 
      onBeforeMount(
       ()=>{
+        let check;
         cityName.forEach((name)=>{
-            getMeteo(name);
+            check = getMeteo(name);
         })
-        
+        console.log(check)
      }
     )
         
@@ -110,7 +121,9 @@
         <BarChart 
             class="h-160"
             key="MainChart"
-            :labelProps="meteoBulletin.map((value:MeteoData)=>{if(value.TC){return value.name}})" 
+            :labelXProps="(meteoBulletin.map((value:MeteoData)=>{if(value.TC){return value.name}})[0] ? meteoBulletin.map((value:MeteoData)=>{if(value.TC){return value.name}}):['Rien à afficher'])" 
+            :labelYProps="['Température °C']"
+            :optionProps="{borderRadius:30,borderWidth:10}"
             :dataProps=" meteoBulletin.map((value:MeteoData)=>{return value.TC})" 
             :axesProps="['°C',' Villes ']"
             :typeProps="['linear','right']"
@@ -132,6 +145,7 @@
         :key="index" ref="thisW" :title="contenu.name" :country="contenu.country" :date="contenu.date" :description="['Lat: '+contenu.lat,'Long: '+ contenu.long,'Elev: '+contenu.elevation]"  :img="contenu.img" :temperature="[contenu.TC,contenu.TCmax ,contenu.TCmin]" :humidite="'humidité '+contenu.humidity"  :pression="contenu.pressure+' bar'" :info4="meteoObject[index]"
         />
       </div>
+
     </article>
 
     <article v-else>
